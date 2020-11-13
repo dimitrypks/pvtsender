@@ -1,8 +1,0 @@
-
-
-remove git
-
-db seed
-
-
-docker-compose exec redis-app redis-cli MONITOR

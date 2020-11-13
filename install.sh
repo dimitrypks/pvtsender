@@ -4,7 +4,6 @@ export TRACKER_HOME=$PWD
 
 cp .env.example .env
 
-sed -i "s/domain_here/$APP_SERVER/g" crons/crons.php 
 
 echo -e "\033[1;32mBuilding the docker environment..Will take 5 minutes\033[0m"
 
