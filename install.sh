@@ -1,9 +1,6 @@
 #!/bin/bash
 
-export TRACKER_HOME=$PWD
-
 cp .env.example .env
-
 
 echo -e "\033[1;32mBuilding the docker environment..Will take 5 minutes\033[0m"
 
