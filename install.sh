@@ -46,7 +46,7 @@ echo -e "\033[1;32mStarting supervisor..\033[0m"
 
 docker-compose exec laravel-app service supervisor start
 
-clear
+# clear
 echo -e "\033[1;32mInstallation complete..Happy sending!\033[0m"
 
 echo "APPLINK: http://$APP_SERVER/s3ndpvt2020"
