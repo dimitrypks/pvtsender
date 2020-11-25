@@ -20,7 +20,7 @@ docker-compose exec laravel-app php artisan key:generate
 
 echo -e "\033[1;32mGenerating the database..\033[0m"
 
-sleep 5
+sleep 10
 
 docker-compose exec laravel-app php artisan migrate 
 
