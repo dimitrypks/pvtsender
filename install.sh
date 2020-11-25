@@ -4,11 +4,11 @@ cp .env.example .env
 
 echo -e "\033[1;32mBuilding the docker environment..Will take 5 minutes\033[0m"
 
-docker-compose build &> /dev/null
+docker-compose build 
 
 echo -e "\033[1;32mStarting the services..\033[0m"
 
-docker-compose up -d &> /dev/null
+docker-compose up -d 
 
 echo -e "\033[1;32mBuilding the depencies..\033[0m"
 
