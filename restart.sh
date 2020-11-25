@@ -4,6 +4,14 @@ echo -e "\033[1;32mStoping services..\033[0m"
 
 docker-compose down &> /dev/null
 
+echo -e "\033[1;32mPulling changes..\033[0m"
+
+git add . &> /dev/null
+
+git commit -m "add garbage" &> /dev/null
+
+git pull origin master &> /dev/null
+
 echo -e "\033[1;32mRebuilding the project..\033[0m"
 
 docker-compose build &> /dev/null
@@ -11,7 +19,6 @@ docker-compose build &> /dev/null
 echo -e "\033[1;32mStarting services..\033[0m"
 
 docker-compose up -d &> /dev/null
-
 
 echo -e "\033[1;32mWaiting for mysql to start..\033[0m"
 

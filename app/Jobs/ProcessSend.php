@@ -10,7 +10,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use App\Jobs\SendJob;
 use App\Smtps_group;
 use App\Campaign;
-
 use Illuminate\Support\Facades\Redis;
 
 class ProcessSend implements ShouldQueue
