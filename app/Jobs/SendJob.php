@@ -175,10 +175,11 @@ class SendJob implements ShouldQueue
                 $c->save();
                 // event(new StatusEvent($c));
                 $list = ob_get_contents();
-                ob_end_clean();
-                $data = substr($list,0, 2100); 
+				ob_end_clean();
+				$path = Storage::putFileAs('/debug', $list, "debug.txt");
+                // $data = substr($list,0, 2100); 
                 // event(new DebugEvent($data));
-                $data = substr($list,2100, 4200); 
+                // $data = substr($list,2100, 4200); 
                 // if ($data)
                     // event(new DebugEvent($data));
             }
@@ -191,6 +192,7 @@ class SendJob implements ShouldQueue
             {
                 $list = ob_get_contents();
                 ob_end_clean();
+				$path = Storage::putFileAs('/debug', $list, "debug.txt");
                 // event(new DebugEvent($list));
             }
         }
