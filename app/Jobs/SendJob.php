@@ -76,21 +76,18 @@ class SendJob implements ShouldQueue
             $mail->From =  $this->campaign->from_email;
             $mail->FromName = $this->campaign->from_name;
             
-			echo "start recp \n";
             $recp_name = '';
             if ($this->recp[1] && $this->recp[1] != "\n")
                 $recp_name = $this->recp[1];
             $recp_name = str_replace("\n", "", $recp_name);
             if (!$recp_name)
 				$recp_name = $this->getNameFromEmail($this->recp[0]);
-			echo "recp \n";
             $mail->addAddress($this->recp[0], $recp_name);
             if ($this->campaign->iscal)
                 $iscal = true;
             $mail->isHTML(true);
             $mail->Subject = $this->campaign->subject;
             $mail->Body    = $this->campaign->body;
-			echo "body \n";
             //if (strpos($this->campaign->content_type, 'multi') || (strpos($this->campaign->content_type, 'html') && sizeof($this->attachements)))
             if ($this->campaign->alt)
                 $mail->AltBody = $this->campaign->alt;
@@ -189,7 +186,7 @@ class SendJob implements ShouldQueue
                     // event(new DebugEvent($data));
             }
         } catch (Exception $e) {
-			echo "error \n";
+			echo $e->getMessage() . " \n";
 			$c = Campaign::find($this->campaign->id);
             $c->status = 0;
             $c->save();
