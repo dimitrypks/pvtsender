@@ -18,6 +18,8 @@ echo -e "\033[1;32mGenerating app key..\033[0m"
 
 docker-compose exec laravel-app php artisan key:generate &> /dev/null
 
+cp -R phpmailer vendor/
+
 echo -e "\033[1;32mGenerating the database..\033[0m"
 
 docker-compose down &> /dev/null
