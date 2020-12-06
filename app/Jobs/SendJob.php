@@ -64,7 +64,6 @@ class SendJob implements ShouldQueue
             $mail->SMTPAuth   = true;
             $mail->Helo = $this->campaign->helo;
             $mail->SMTPAutoTLS = $this->campaign->auto_tls;
-            echo $this->smtp->username . "\n";
             $mail->Username = $this->smtp->username;
             $mail->Password = $this->smtp->password;
 
@@ -77,18 +76,21 @@ class SendJob implements ShouldQueue
             $mail->From =  $this->campaign->from_email;
             $mail->FromName = $this->campaign->from_name;
             
+			echo "start recp \n";
             $recp_name = '';
             if ($this->recp[1] && $this->recp[1] != "\n")
                 $recp_name = $this->recp[1];
             $recp_name = str_replace("\n", "", $recp_name);
             if (!$recp_name)
-                $recp_name = $this->getNameFromEmail($this->recp[0]);
+				$recp_name = $this->getNameFromEmail($this->recp[0]);
+			echo "recp \n";
             $mail->addAddress($this->recp[0], $recp_name);
             if ($this->campaign->iscal)
                 $iscal = true;
             $mail->isHTML(true);
             $mail->Subject = $this->campaign->subject;
             $mail->Body    = $this->campaign->body;
+			echo "body \n";
             //if (strpos($this->campaign->content_type, 'multi') || (strpos($this->campaign->content_type, 'html') && sizeof($this->attachements)))
             if ($this->campaign->alt)
                 $mail->AltBody = $this->campaign->alt;
@@ -128,7 +130,9 @@ class SendJob implements ShouldQueue
             if (!$this->debug_mode)
                 $stats = Campaign_stats::find($this->stats);
             if ($mail->send()) {
-                if (!$this->debug_mode)
+				echo "send \n";
+
+				if (!$this->debug_mode)
                 {
                     $stats = Campaign_stats::find($this->stats);
                     if ($stats->pending != 0)
@@ -147,6 +151,7 @@ class SendJob implements ShouldQueue
                     }
                 }
             } else {
+				echo "fail \n";
                 if (!$this->debug_mode)
                 {
                     
@@ -184,7 +189,8 @@ class SendJob implements ShouldQueue
                     // event(new DebugEvent($data));
             }
         } catch (Exception $e) {
-            $c = Campaign::find($this->campaign->id);
+			echo "error \n";
+			$c = Campaign::find($this->campaign->id);
             $c->status = 0;
             $c->save();
             // event(new StatusEvent($c));
