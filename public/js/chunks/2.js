@@ -672,6 +672,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 
@@ -685,6 +690,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
+      loading: false,
       htmlPrompt: false,
       html_body: null,
       popupActive: false,
@@ -833,6 +839,16 @@ __webpack_require__.r(__webpack_exports__);
       this.data.emails = this.file_type(this.campaign.files, 1);
       this.data.attachements = this.file_type(this.campaign.files, 2);
     },
+    refreshStats: function refreshStats() {
+      var _this = this;
+
+      this.loading = true;
+      this.$store.dispatch('refreshStats').then(function (res) {
+        setTimeout(function () {
+          _this.loading = false;
+        }, 2000);
+      });
+    },
     isImg: function isImg(src) {
       var ext = src.split('.').pop();
       if (ext == 'png' || ext == 'jpeg' || ext == 'jpg') return 1;
@@ -846,7 +862,7 @@ __webpack_require__.r(__webpack_exports__);
       });else return [];
     },
     uploadFile: function uploadFile(input) {
-      var _this = this;
+      var _this2 = this;
 
       if (input.target.files && input.target.files[0]) {
         var data = {
@@ -854,7 +870,7 @@ __webpack_require__.r(__webpack_exports__);
           type: 1
         };
         this.$store.dispatch('uploadFile', data).then(function (res) {
-          _this.showDialog(res.data.message, 0, 'Upload');
+          _this2.showDialog(res.data.message, 0, 'Upload');
         });
       }
     },
@@ -863,23 +879,23 @@ __webpack_require__.r(__webpack_exports__);
       return 1;
     },
     saveCampaign: function saveCampaign() {
-      var _this2 = this;
+      var _this3 = this;
 
       this.btnLoading('#save-loading');
       this.data.files = this.data.emails.concat(this.data.attachements);
       this.data.body = this.html_body;
       this.$store.dispatch("saveCampaign", this.data).then(function (res) {
-        _this2.$vs.loading.close("#save-loading > .con-vs-loading");
+        _this3.$vs.loading.close("#save-loading > .con-vs-loading");
 
-        _this2.showDialog(res.data.message, 0, 'Campaign');
+        _this3.showDialog(res.data.message, 0, 'Campaign');
 
-        if (_this2.data.id == 0) _this2.$router.push({
+        if (_this3.data.id == 0) _this3.$router.push({
           path: "/campaign/".concat(res.data.campaign.id)
         });
       }).catch(function (err) {
-        _this2.$vs.loading.close("#save-loading > .con-vs-loading");
+        _this3.$vs.loading.close("#save-loading > .con-vs-loading");
 
-        _this2.showDialog("Error saving!", 1, 'Campaign');
+        _this3.showDialog("Error saving!", 1, 'Campaign');
       });
     },
     attachFile: function attachFile(file) {
@@ -913,31 +929,31 @@ __webpack_require__.r(__webpack_exports__);
       if (status == 2) return "Completed";
     },
     launch: function launch() {
-      var _this3 = this;
+      var _this4 = this;
 
       this.debug = 0;
       this.data.files = this.data.emails.concat(this.data.attachements);
       this.data.body = this.html_body;
       if (!this.valid_campaign()) this.showDialog('Campaign forms are not completed', 1, 'Campaign');else this.$store.dispatch("saveCampaign", this.data).then(function (res) {
-        _this3.showDialog(res.data.message, 0, 'Campaign');
+        _this4.showDialog(res.data.message, 0, 'Campaign');
 
-        _this3.$store.dispatch('launch', _this3.data.id).then(function (res) {
-          if (res.data.error) _this3.showDialog(res.data.message, 1, 'Campaign');else _this3.showDialog(res.data.message, 0, 'Campaign');
+        _this4.$store.dispatch('launch', _this4.data.id).then(function (res) {
+          if (res.data.error) _this4.showDialog(res.data.message, 1, 'Campaign');else _this4.showDialog(res.data.message, 0, 'Campaign');
         });
       });
     },
     launchDebug: function launchDebug() {
-      var _this4 = this;
+      var _this5 = this;
 
       this.debug = 1;
       this.logs = '';
       this.data.files = this.data.emails.concat(this.data.attachements);
       this.data.body = this.html_body;
       if (!this.valid_campaign()) this.showDialog('Campaign forms are not completed', 1, 'Campaign');else this.$store.dispatch("saveCampaign", this.data).then(function (res) {
-        _this4.showDialog(res.data.message, 0, 'Campaign');
+        _this5.showDialog(res.data.message, 0, 'Campaign');
 
-        _this4.$store.dispatch('launchDebug', _this4.data.id).then(function (res) {
-          if (res.data.error) _this4.showDialog(res.data.message, 1, 'Campaign');else _this4.showDialog(res.data.message, 0, 'Campaign');
+        _this5.$store.dispatch('launchDebug', _this5.data.id).then(function (res) {
+          if (res.data.error) _this5.showDialog(res.data.message, 1, 'Campaign');else _this5.showDialog(res.data.message, 0, 'Campaign');
         });
       });
     },
@@ -952,7 +968,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    var _this5 = this;
+    var _this6 = this;
 
     var id = this.$route.params.id;
     this.data.id = parseInt(id);
@@ -970,9 +986,9 @@ __webpack_require__.r(__webpack_exports__);
     if (id != 0) {
       this.$vs.loading();
       this.$store.dispatch("getCampaign", id).then(function (res) {
-        _this5.setData();
+        _this6.setData();
 
-        _this5.$vs.loading.close();
+        _this6.$vs.loading.close();
       });
     }
   },
@@ -991,21 +1007,17 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this6 = this;
-
     if (this.data.id == 0) this.$store.commit('RESET_DATA');else {
-      this.$store.dispatch('getCampaignStats', this.data.id);
-      window.Echo.channel("stats-channel").listen(".new-stats", function (e) {
-        _this6.$store.commit("SET_CAMPAIGN_STATS", e.stats);
-      });
-      window.Echo.channel("status-channel").listen(".status", function (e) {
-        _this6.$store.commit("UPDATE_CAMPAIGN_STATUS", e.campaign);
-
-        _this6.data.status = e.campaign.status;
-      });
-      window.Echo.channel("debug-channel").listen(".debug", function (e) {
-        _this6.logs += e.debug;
-      });
+      this.$store.dispatch('getCampaignStats', this.data.id); //   window.Echo.channel("stats-channel").listen(".new-stats", e => {
+      //     this.$store.commit("SET_CAMPAIGN_STATS", e.stats);
+      //   });
+      //   window.Echo.channel("status-channel").listen(".status", e => {
+      //     this.$store.commit("UPDATE_CAMPAIGN_STATUS", e.campaign);
+      //     this.data.status = e.campaign.status;
+      //   });
+      //   window.Echo.channel("debug-channel").listen(".debug", e => {
+      //     this.logs += e.debug;
+      //   });
     }
   }
 });
@@ -1119,7 +1131,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".editor-holder{\n  width: 800px;\n  height: 500px;\n  position: relative;\n  top: 0;\n  overflow: auto;\n  -webkit-transition: all 0.5s ease-in-out;\n  transition: all 0.5s ease-in-out;\n}[dir] .editor-holder{\n  margin-top: 20px;\n  border-radius: 3px;\n  background: #1f1f1f !important;\n}[dir=ltr] .editor-holder{\n  box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.4);\n}[dir=rtl] .editor-holder{\n  box-shadow: -5px 5px 10px 0px rgba(0, 0, 0, 0.4);\n}\n.editor-holder textarea,.editor-holder code {\n  width: 100%;\n  height: auto;\n  min-height: 500px;\n  position: absolute;\n  top: 0;\n  font-size: 14px;\n  font-family: Consolas,Liberation Mono,Courier,monospace;\n  line-height: 21px;\n  overflow: visible;\n  -webkit-transition: all 0.5s ease-in-out;\n  transition: all 0.5s ease-in-out;\n}\n[dir] .editor-holder textarea, [dir] .editor-holder code {\n  border: 0;\n  margin: 0;\n  padding: 20px !important;\n}\n[dir=ltr] .editor-holder textarea, [dir=ltr] .editor-holder code {\n  left: 0;\n}\n[dir=rtl] .editor-holder textarea, [dir=rtl] .editor-holder code {\n  right: 0;\n}\n.editor-holder textarea{\n  z-index: 2;\n  height: auto;\n  resize: none;\n  color: #fff;\n  text-fill-color: transparent;\n  -webkit-text-fill-color: transparent;\n}\n[dir] .editor-holder textarea{\n  background: transparent !important;\n  text-shadow: 0px 0px 0px rgba(0, 0, 0, 0);\n}\n.editor-holder textarea::-webkit-input-placeholder{\n  color: rgba(255, 255, 255, 1);\n}\n.editor-holder textarea:focus{\n  outline: 0;\n  -webkit-box-shadow: none;\n  -moz-box-shadow: none;\n}\n[dir] .editor-holder textarea:focus{\n  border: 0;\n  box-shadow: none;\n}\n.editor-holder textarea code{\n  z-index: 1;\n}\n", ""]);
+exports.push([module.i, ".editor-holder{\n  width: 800px;\n  height: 500px;\n  position: relative;\n  top: 0;\n  overflow: auto;\n  -webkit-transition: all 0.5s ease-in-out;\n  transition: all 0.5s ease-in-out;\n}[dir] .editor-holder{\n  margin-top: 20px;\n  border-radius: 3px;\n  background: #1f1f1f !important;\n}[dir=ltr] .editor-holder{\n  box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.4);\n}[dir=rtl] .editor-holder{\n  box-shadow: -5px 5px 10px 0px rgba(0, 0, 0, 0.4);\n}\n.editor-holder textarea,.editor-holder code {\n  width: 100%;\n  height: auto;\n  min-height: 500px;\n  position: absolute;\n  top: 0;\n  font-size: 14px;\n  font-family: Consolas,Liberation Mono,Courier,monospace;\n  line-height: 21px;\n  overflow: visible;\n  -webkit-transition: all 0.5s ease-in-out;\n  transition: all 0.5s ease-in-out;\n}\n[dir] .editor-holder textarea, [dir] .editor-holder code {\n  border: 0;\n  margin: 0;\n  padding: 20px !important;\n}\n[dir=ltr] .editor-holder textarea, [dir=ltr] .editor-holder code {\n  left: 0;\n}\n[dir=rtl] .editor-holder textarea, [dir=rtl] .editor-holder code {\n  right: 0;\n}\n.editor-holder textarea{\n  z-index: 2;\n  height: auto;\n  resize: none;\n  color: #fff;\n  text-fill-color: transparent;\n  -webkit-text-fill-color: transparent;\n}\n[dir] .editor-holder textarea{\n  background: transparent !important;\n  text-shadow: 0px 0px 0px rgba(0, 0, 0, 0);\n}\n.editor-holder textarea::-webkit-input-placeholder{\n  color: rgba(255, 255, 255, 1);\n}\n.editor-holder textarea:focus{\n  outline: 0;\n  -webkit-box-shadow: none;\n  -moz-box-shadow: none;\n}\n[dir] .editor-holder textarea:focus{\n  border: 0;\n  box-shadow: none;\n}\n.editor-holder textarea code{\n  z-index: 1;\n}\n.refresh {\n  -webkit-transition: all 1s ease-in-out;\n  transition: all 1s ease-in-out\n}\n[dir=ltr] .refresh {\n  -webkit-transform: rotate(360deg);\n          transform: rotate(360deg)\n}\n[dir=rtl] .refresh {\n  -webkit-transform: rotate(-360deg);\n          transform: rotate(-360deg)\n}\n.btn-refresh {\n  position: absolute;\n  top: -20px;\n}\n[dir=ltr] .btn-refresh {\n  right: 20px;\n}\n[dir=rtl] .btn-refresh {\n  left: 20px;\n}\n.btn-refresh .vs-icon {\n  font-size: 1.5rem !important;\n}\n", ""]);
 
 // exports
 
@@ -2548,16 +2560,40 @@ var render = function() {
                   ),
                   _vm._v(" "),
                   _c(
-                    "vs-button",
-                    {
-                      attrs: {
-                        color: "primary",
-                        id: "save-loading",
-                        type: "filled"
-                      },
-                      on: { click: _vm.saveCampaign }
-                    },
-                    [_vm._v("Save")]
+                    "div",
+                    [
+                      _c(
+                        "vs-button",
+                        {
+                          attrs: {
+                            color: "primary",
+                            id: "save-loading",
+                            type: "filled"
+                          },
+                          on: { click: _vm.saveCampaign }
+                        },
+                        [_vm._v("Save")]
+                      ),
+                      _vm._v(" "),
+                      _c("vs-button", {
+                        staticClass: "btn-refresh",
+                        class: { refresh: _vm.loading },
+                        attrs: {
+                          radius: "",
+                          disabled: _vm.loading,
+                          color: "warning",
+                          type: "flat",
+                          "icon-pack": "feather",
+                          icon: "icon-refresh-cw"
+                        },
+                        on: {
+                          click: function($event) {
+                            return _vm.refreshStats()
+                          }
+                        }
+                      })
+                    ],
+                    1
                   )
                 ],
                 1

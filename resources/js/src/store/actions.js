@@ -254,7 +254,8 @@ const actions = {
       return new Promise((resolve, error) => {
         axios.get(`/api/campaign/launch/${id}`)
         .then((res) => {
-          resolve(res);
+        	commit('UPDATE_CAMPAIGN_STATUS', {id: id, status: 1});
+          	resolve(res);
         });
       });
     },
@@ -262,7 +263,8 @@ const actions = {
       return new Promise((resolve, error) => {
         axios.get(`/api/campaign/launch/debug/${id}`)
         .then((res) => {
-          resolve(res);
+        	commit('UPDATE_CAMPAIGN_STATUS', {id: id, status: 1});
+			resolve(res);
         });
       });
     },

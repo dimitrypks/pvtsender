@@ -209,16 +209,21 @@
               <vs-button :color="getStatusColor(data.status)" icon-pack="feather" icon="icon-loader" class="loading-btn" icon-after type="filled" v-else>Processing</vs-button>
               <vs-button color="primary" icon-pack="feather" icon="icon-activity" icon-after type="filled" class="ml-3" v-if="data.status == 0" @click="launchDebug">Debug</vs-button>
             </div>
-            <vs-button color="primary" id="save-loading" type="filled" @click="saveCampaign">Save</vs-button>
+			<div>
+            	<vs-button color="primary" id="save-loading" type="filled" @click="saveCampaign">Save</vs-button>
+				<vs-button class="btn-refresh" radius :disabled="loading" :class="{refresh : loading}" @click="refreshStats()" color="warning" type="flat" icon-pack="feather" icon="icon-refresh-cw"></vs-button>
+			</div>
           </div>
         </vx-card>
       </div>
+
       <div class="vx-col w-full mb-base" v-if="campaign">
           <vx-card title="Statistics" collapse-action>
             <div class="vx-row" >
               <div class="vx-col w-full mb-base">
                   <vx-card title="Campaign Overview">
                       <div slot="no-body">
+						
                         <div class="vx-row text-center">
                             <div class="vx-col w-full lg:w-1/5 md:w-full sm:w-1/5 flex flex-col justify-between mb-4 lg:order-first md:order-last sm:order-first order-last">
                                 <div class="lg:ml-6 lg:mt-6 md:mt-0 md:ml-0 sm:ml-6 sm:mt-6">
@@ -274,6 +279,7 @@ import vSelect from 'vue-select'
 export default {
   data() {
     return {
+	  loading: false,
       htmlPrompt: false,
       html_body: null,
       popupActive: false,
@@ -417,7 +423,16 @@ export default {
       this.data.auto_tls = this.campaign.auto_tls;
       this.data.emails = this.file_type(this.campaign.files, 1);
       this.data.attachements = this.file_type(this.campaign.files, 2);
-    },
+	},
+	refreshStats(){
+		this.loading = true;
+		this.$store.dispatch('refreshStats')
+		.then((res) => {
+			setTimeout(() => {
+				this.loading = false;
+			}, 2000)
+		})
+	},
     isImg(src){
       let ext = src.split('.').pop();
       if (ext == 'png' || ext == 'jpeg' || ext == 'jpg')
@@ -806,5 +821,18 @@ only screen and (min-width:636px) and (max-width:991px) {
 
 .editor-holder textarea code{
 		z-index: 1;
-	}
+}
+.refresh {
+	transition: all 1s ease-in-out;
+	transform: rotate(360deg)
+}
+
+.btn-refresh {
+	position: absolute;
+	top: -20px;
+	right: 20px;
+}
+.btn-refresh .vs-icon {
+	font-size: 1.5rem !important;
+}
 </style>
