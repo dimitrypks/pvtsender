@@ -209,7 +209,7 @@
               <vs-button :color="getStatusColor(data.status)" icon-pack="feather" icon="icon-loader" class="loading-btn" icon-after type="filled" v-else>Processing</vs-button>
               <vs-button color="primary" icon-pack="feather" icon="icon-activity" icon-after type="filled" class="ml-3" v-if="data.status == 0" @click="launchDebug">Debug</vs-button>
             </div>
-			<div>
+			<div class="flex flex-row">
             	<vs-button color="primary" id="save-loading" type="filled" @click="saveCampaign">Save</vs-button>
 				<vs-button class="btn-refresh" radius :disabled="loading" :class="{refresh : loading}" @click="refreshStats()" color="warning" type="flat" icon-pack="feather" icon="icon-refresh-cw"></vs-button>
 			</div>
@@ -426,7 +426,7 @@ export default {
 	},
 	refreshStats(){
 		this.loading = true;
-		this.$store.dispatch('refreshStats')
+		this.$store.dispatch('refreshStats', this.campaign_id)
 		.then((res) => {
 			setTimeout(() => {
 				this.loading = false;
@@ -828,9 +828,7 @@ only screen and (min-width:636px) and (max-width:991px) {
 }
 
 .btn-refresh {
-	position: absolute;
-	top: -20px;
-	right: 20px;
+	margin-left: 5px;
 }
 .btn-refresh .vs-icon {
 	font-size: 1.5rem !important;

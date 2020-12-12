@@ -274,7 +274,13 @@ const actions = {
           res(response.data);
         });
       })
-    },
+	},
+	refreshStats({commit}, id){
+		axios.get(`/api/campaign/stats/${id}`)
+		.then((res) => {
+			commit('SET_CAMPAIGN_STATS', res.data.stats);
+		});
+	},
     checkUser({commit}){
       return new Promise((res,rej)=> {
         axios.get('/api/check').then((response) => {

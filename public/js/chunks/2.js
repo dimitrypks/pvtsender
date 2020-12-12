@@ -843,7 +843,7 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.loading = true;
-      this.$store.dispatch('refreshStats').then(function (res) {
+      this.$store.dispatch('refreshStats', this.campaign_id).then(function (res) {
         setTimeout(function () {
           _this.loading = false;
         }, 2000);
@@ -1131,7 +1131,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".editor-holder{\n  width: 800px;\n  height: 500px;\n  position: relative;\n  top: 0;\n  overflow: auto;\n  -webkit-transition: all 0.5s ease-in-out;\n  transition: all 0.5s ease-in-out;\n}[dir] .editor-holder{\n  margin-top: 20px;\n  border-radius: 3px;\n  background: #1f1f1f !important;\n}[dir=ltr] .editor-holder{\n  box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.4);\n}[dir=rtl] .editor-holder{\n  box-shadow: -5px 5px 10px 0px rgba(0, 0, 0, 0.4);\n}\n.editor-holder textarea,.editor-holder code {\n  width: 100%;\n  height: auto;\n  min-height: 500px;\n  position: absolute;\n  top: 0;\n  font-size: 14px;\n  font-family: Consolas,Liberation Mono,Courier,monospace;\n  line-height: 21px;\n  overflow: visible;\n  -webkit-transition: all 0.5s ease-in-out;\n  transition: all 0.5s ease-in-out;\n}\n[dir] .editor-holder textarea, [dir] .editor-holder code {\n  border: 0;\n  margin: 0;\n  padding: 20px !important;\n}\n[dir=ltr] .editor-holder textarea, [dir=ltr] .editor-holder code {\n  left: 0;\n}\n[dir=rtl] .editor-holder textarea, [dir=rtl] .editor-holder code {\n  right: 0;\n}\n.editor-holder textarea{\n  z-index: 2;\n  height: auto;\n  resize: none;\n  color: #fff;\n  text-fill-color: transparent;\n  -webkit-text-fill-color: transparent;\n}\n[dir] .editor-holder textarea{\n  background: transparent !important;\n  text-shadow: 0px 0px 0px rgba(0, 0, 0, 0);\n}\n.editor-holder textarea::-webkit-input-placeholder{\n  color: rgba(255, 255, 255, 1);\n}\n.editor-holder textarea:focus{\n  outline: 0;\n  -webkit-box-shadow: none;\n  -moz-box-shadow: none;\n}\n[dir] .editor-holder textarea:focus{\n  border: 0;\n  box-shadow: none;\n}\n.editor-holder textarea code{\n  z-index: 1;\n}\n.refresh {\n  -webkit-transition: all 1s ease-in-out;\n  transition: all 1s ease-in-out\n}\n[dir=ltr] .refresh {\n  -webkit-transform: rotate(360deg);\n          transform: rotate(360deg)\n}\n[dir=rtl] .refresh {\n  -webkit-transform: rotate(-360deg);\n          transform: rotate(-360deg)\n}\n.btn-refresh {\n  position: absolute;\n  top: -20px;\n}\n[dir=ltr] .btn-refresh {\n  right: 20px;\n}\n[dir=rtl] .btn-refresh {\n  left: 20px;\n}\n.btn-refresh .vs-icon {\n  font-size: 1.5rem !important;\n}\n", ""]);
+exports.push([module.i, ".editor-holder{\n  width: 800px;\n  height: 500px;\n  position: relative;\n  top: 0;\n  overflow: auto;\n  -webkit-transition: all 0.5s ease-in-out;\n  transition: all 0.5s ease-in-out;\n}[dir] .editor-holder{\n  margin-top: 20px;\n  border-radius: 3px;\n  background: #1f1f1f !important;\n}[dir=ltr] .editor-holder{\n  box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.4);\n}[dir=rtl] .editor-holder{\n  box-shadow: -5px 5px 10px 0px rgba(0, 0, 0, 0.4);\n}\n.editor-holder textarea,.editor-holder code {\n  width: 100%;\n  height: auto;\n  min-height: 500px;\n  position: absolute;\n  top: 0;\n  font-size: 14px;\n  font-family: Consolas,Liberation Mono,Courier,monospace;\n  line-height: 21px;\n  overflow: visible;\n  -webkit-transition: all 0.5s ease-in-out;\n  transition: all 0.5s ease-in-out;\n}\n[dir] .editor-holder textarea, [dir] .editor-holder code {\n  border: 0;\n  margin: 0;\n  padding: 20px !important;\n}\n[dir=ltr] .editor-holder textarea, [dir=ltr] .editor-holder code {\n  left: 0;\n}\n[dir=rtl] .editor-holder textarea, [dir=rtl] .editor-holder code {\n  right: 0;\n}\n.editor-holder textarea{\n  z-index: 2;\n  height: auto;\n  resize: none;\n  color: #fff;\n  text-fill-color: transparent;\n  -webkit-text-fill-color: transparent;\n}\n[dir] .editor-holder textarea{\n  background: transparent !important;\n  text-shadow: 0px 0px 0px rgba(0, 0, 0, 0);\n}\n.editor-holder textarea::-webkit-input-placeholder{\n  color: rgba(255, 255, 255, 1);\n}\n.editor-holder textarea:focus{\n  outline: 0;\n  -webkit-box-shadow: none;\n  -moz-box-shadow: none;\n}\n[dir] .editor-holder textarea:focus{\n  border: 0;\n  box-shadow: none;\n}\n.editor-holder textarea code{\n  z-index: 1;\n}\n.refresh {\n  -webkit-transition: all 1s ease-in-out;\n  transition: all 1s ease-in-out\n}\n[dir=ltr] .refresh {\n  -webkit-transform: rotate(360deg);\n          transform: rotate(360deg)\n}\n[dir=rtl] .refresh {\n  -webkit-transform: rotate(-360deg);\n          transform: rotate(-360deg)\n}\n[dir=ltr] .btn-refresh {\n  margin-left: 5px;\n}\n[dir=rtl] .btn-refresh {\n  margin-right: 5px;\n}\n.btn-refresh .vs-icon {\n  font-size: 1.5rem !important;\n}\n", ""]);
 
 // exports
 
@@ -2561,6 +2561,7 @@ var render = function() {
                   _vm._v(" "),
                   _c(
                     "div",
+                    { staticClass: "flex flex-row" },
                     [
                       _c(
                         "vs-button",
