@@ -82,7 +82,7 @@ class SendJob implements ShouldQueue
             $recp_name = str_replace("\n", "", $recp_name);
             if (!$recp_name)
 				$recp_name = $this->getNameFromEmail($this->recp[0]);
-			echo $this->recp;
+			print_r($this->recp);
             $mail->addAddress($this->recp[0], $recp_name);
             if ($this->campaign->iscal)
                 $iscal = true;
