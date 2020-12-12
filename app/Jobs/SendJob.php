@@ -109,7 +109,9 @@ class SendJob implements ShouldQueue
                 '[to]',
                 '[mail_date]'
             );
-            $recp_email = $this->recp[0];
+			$recp_email = $this->recp[0];
+			echo $recp_email . "\n";
+			echo $this->recp;
             $b = array(
                 $this->campaign->from_name,
                 $this->campaign->from_email,
