@@ -428,6 +428,7 @@ export default {
 		this.loading = true;
 		this.$store.dispatch('refreshStats', this.campaign_id)
 		.then((res) => {
+			this.logs = res.debug;
 			setTimeout(() => {
 				this.loading = false;
 			}, 2000)
@@ -536,10 +537,10 @@ export default {
         this.showDialog(res.data.message, 0, 'Campaign');
         this.$store.dispatch('launchDebug', this.data.id)
         .then(res => {
-          if (res.data.error)
-            this.showDialog(res.data.message, 1, 'Campaign');
-          else
-            this.showDialog(res.data.message, 0, 'Campaign');
+			if (res.data.error)
+				this.showDialog(res.data.message, 1, 'Campaign');
+			else
+				this.showDialog(res.data.message, 0, 'Campaign');
         })
       })
     },

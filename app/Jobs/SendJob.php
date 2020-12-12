@@ -128,8 +128,6 @@ class SendJob implements ShouldQueue
             if (!$this->debug_mode)
                 $stats = Campaign_stats::find($this->stats);
             if ($mail->send()) {
-				echo "send \n";
-
 				if (!$this->debug_mode)
                 {
                     $stats = Campaign_stats::find($this->stats);
@@ -138,35 +136,30 @@ class SendJob implements ShouldQueue
                         $stats->completed++;
                         $stats->pending--;
                         $stats->save();
-                        // event(new StatsEvent($stats));
                     }
                     if ($stats->pending == 0)
                     {
                         $c = Campaign::find($this->campaign->id);
                         $c->status = 2;
                         $c->save();
-                        // event(new StatusEvent($c));
                     }
                 }
             } else {
-				echo "fail \n";
                 if (!$this->debug_mode)
                 {
                     
                     $stats = Campaign_stats::find($this->stats);
                     if ($stats->pending != 0)
                     {
-                    $stats->failed++;
-                    $stats->pending--;
-                    $stats->save();
-                    // event(new StatsEvent($stats));
+						$stats->failed++;
+						$stats->pending--;
+						$stats->save();
                     } 
                     if ($stats->pending == 0)
                     {
                         $c = Campaign::find($this->campaign->id);
                         $c->status = 2;
                         $c->save();
-                        // event(new StatusEvent($c));
                     }
                 }
             }
@@ -176,16 +169,9 @@ class SendJob implements ShouldQueue
                 $c = Campaign::find($this->campaign->id);
                 $c->status = 0;
                 $c->save();
-                // event(new StatusEvent($c));
                 $list = ob_get_contents();
 				ob_end_clean();
 				file_put_contents(storage_path('app/public/debug.txt'), $list);
-				// $path = Storage::putFileAs('/debug', $list, "debug.txt");
-                // $data = substr($list,0, 2100); 
-                // event(new DebugEvent($data));
-                // $data = substr($list,2100, 4200); 
-                // if ($data)
-                    // event(new DebugEvent($data));
             }
         } catch (Exception $e) {
 			file_put_contents(storage_path('app/public/debug.txt'), $e->getMessage() . " \n");
@@ -198,8 +184,6 @@ class SendJob implements ShouldQueue
                 $list = ob_get_contents();
 				ob_end_clean();
 				file_put_contents(storage_path('app/public/debug.txt'), $list);
-				// $path = Storage::putFileAs('/debug', $list, "debug.txt");
-                // event(new DebugEvent($list));
             }
         }
     }

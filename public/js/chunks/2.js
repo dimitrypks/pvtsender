@@ -844,6 +844,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.loading = true;
       this.$store.dispatch('refreshStats', this.campaign_id).then(function (res) {
+        _this.logs = res.debug;
         setTimeout(function () {
           _this.loading = false;
         }, 2000);

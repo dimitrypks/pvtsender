@@ -276,10 +276,13 @@ const actions = {
       })
 	},
 	refreshStats({commit}, id){
-		axios.get(`/api/campaign/stats/${id}`)
-		.then((res) => {
-			commit('SET_CAMPAIGN_STATS', res.data.stats);
-		});
+		return new Promise((reslv,rej)=> {
+			axios.get(`/api/campaign/stats/${id}`)
+			.then((res) => {
+				commit('SET_CAMPAIGN_STATS', res.data.stats);
+				reslv(res.data);
+			});
+		})
 	},
     checkUser({commit}){
       return new Promise((res,rej)=> {
