@@ -108,10 +108,10 @@ class CampaignController extends Controller
 
     function launchCampaign($id)
     {
-        $campaign = Campaign::with('files')->where('id', $id)->first();
+		file_put_contents(storage_path('app/public/debug.txt'), "");
+		$campaign = Campaign::with('files')->where('id', $id)->first();
         $campaign->status = 1;
         $campaign->save();
-        // event(new StatusEvent($campaign));
         if (!$campaign->stats)
             $stats = new Campaign_stats();
         else
@@ -127,10 +127,12 @@ class CampaignController extends Controller
 
     function launchDebug($id)
     {
+		$email = env('EMAIL_DEBUG');
+		if (!$email)
+	        return response()->json(['message' => 'Debug email not set!', 'error' => 1]);
         $campaign = Campaign::with('files')->where('id', $id)->first();
         $campaign->status = 1;
         $campaign->save();
-        // event(new StatusEvent($campaign));
         if (!$campaign->stats)
             $stats = new Campaign_stats();
         else
