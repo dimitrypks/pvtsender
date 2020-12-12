@@ -188,15 +188,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   mounted: function mounted() {
-    var _this4 = this;
-
     this.isMounted = true;
-    window.Echo.channel("status-channel").listen(".status", function (e) {
-      _this4.$store.commit("UPDATE_CAMPAIGN_STATUS", e.campaign);
-    });
-    window.Echo.channel("stats-channel").listen(".new-stats", function (e) {
-      _this4.$store.commit("SET_CAMPAIGN_SPEC_STATS", e.stats);
-    });
   },
   filters: {
     date: function date(val) {

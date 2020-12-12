@@ -171,12 +171,6 @@ export default {
   },
   mounted() {
     this.isMounted = true;
-    window.Echo.channel("status-channel").listen(".status", e => {
-      this.$store.commit("UPDATE_CAMPAIGN_STATUS", e.campaign);
-    });
-    window.Echo.channel("stats-channel").listen(".new-stats", e => {
-      this.$store.commit("SET_CAMPAIGN_SPEC_STATS", e.stats);
-    });
   },
   filters: {
     date(val){

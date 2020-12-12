@@ -166,8 +166,10 @@ class CampaignController extends Controller
 
     function getStatsById($id)
     {
-        $stats = Campaign::find($id)->stats;
-        return response()->json(['stats' => $stats]);
+		$stats = Campaign::find($id)->stats;
+		$contents = file_get_contents(storage_path('app/public/debug.txt'));
+
+        return response()->json(['stats' => $stats, 'debug' => $contents]);
     }
 
     // function launchCampaign($id)
