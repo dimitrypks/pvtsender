@@ -43,7 +43,10 @@ echo -e "\033[1;32mLinking storage..\033[0m"
 docker-compose exec laravel-app php artisan storage:link &> /dev/null
 
 chmod -R 777 storage
-
+chmod 666 .env
+touch storage/app/public/debug.txt
+chmod 666 storage/app/public/debug.txt
+touch 
 echo -e "\033[1;32mStarting supervisor..\033[0m"
 
 docker-compose exec laravel-app service supervisor start &> /dev/null
