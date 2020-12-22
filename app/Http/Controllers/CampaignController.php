@@ -297,7 +297,8 @@ class CampaignController extends Controller
     function deleteCampaign($id)
     {
         $campaign = Campaign::find($id);
-        $campaign->files()->detach();
+		$campaign->files()->detach();
+		$campaign->stats->delete();
         $campaign->delete();
         return response()->json(['message' => 'Campaign deleted!']);
     }
