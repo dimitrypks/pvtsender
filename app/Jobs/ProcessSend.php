@@ -59,7 +59,6 @@ class ProcessSend implements ShouldQueue
         {
             foreach($emails_files as $file)
             {
-				$stats = $campaign->stats;
 				$stats->pending += $file->lines;
 				$stats->save();
 				$emails = file(storage_path('app/public/' . $file->path));
