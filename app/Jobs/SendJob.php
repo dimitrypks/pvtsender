@@ -125,8 +125,8 @@ class SendJob implements ShouldQueue
                 $keys = preg_split("/[:]+/", trim($value), '2');
                 $mail->addCustomHeader($keys[0], $keys[1]);
             }
-            if (!$this->debug_mode)
-                $stats = Campaign_stats::find($this->stats);
+            // if (!$this->debug_mode)
+            //     $stats = Campaign_stats::find($this->stats);
             if ($mail->send()) {
 				if (!$this->debug_mode)
                 {

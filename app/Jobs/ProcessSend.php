@@ -59,38 +59,66 @@ class ProcessSend implements ShouldQueue
         {
             foreach($emails_files as $file)
             {
-                $handle = fopen(storage_path('app/public/' . $file->path), "r");
-                if ($handle) {
-                    while (($buffer = fgets($handle, 4096)) !== false) {
-                        if (strlen($buffer) > 5){
-                            if(strpos($buffer, ';') !== false){
-                                $stats->pending++;
-                                $stats->save();
-                                $recp = explode(";", $buffer);
-                                //$recp = $this->fixName($recp);
-                                SendJob::dispatch($campaign, $stats->id, $recp, $attachements, $smtps[$step_smtp], 0);
-                                $step_rot++;
-                                if($step_rot == $rot)
-                                {
-                                    $step_smtp++;
-                                    $step_rot = 0;
-                                }
-                                if($step_smtp == $smtps_count)
-                                    $step_smtp = 0;
-                            }
-                            else
-                            {
-                                $stats->failed++;
-                                $stats->save();
-                            }
-                        }
-                        else
-                        {
-                            $stats->failed++;
-                            $stats->save();
-                        }
-                    }
-                }
+				$stats = $campaign->stats;
+				$stats->pending += $file->lines;
+				$stats->save();
+				$emails = file(storage_path('app/public/' . $file->path));
+				foreach (array_chunk($emails, 10000) as $lines){
+					foreach($lines as $visitor) {
+						if(strpos($buffer, ';') !== false){
+							// $stats->pending++;
+							// $stats->save();
+							$recp = explode(";", $buffer);
+							SendJob::dispatch($campaign, $stats->id, $recp, $attachements, $smtps[$step_smtp], 0);
+							$step_rot++;
+							if($step_rot == $rot)
+							{
+								$step_smtp++;
+								$step_rot = 0;
+							}
+							if($step_smtp == $smtps_count)
+								$step_smtp = 0;
+						}
+						else
+						{
+							$stats->failed++;
+							$stats->pending--;
+							// $stats->save();
+						}
+					}
+				}
+                // $handle = fopen(storage_path('app/public/' . $file->path), "r");
+                // if ($handle) {
+                //     while (($buffer = fgets($handle, 4096)) !== false) {
+                //         if (strlen($buffer) > 5){
+                //             if(strpos($buffer, ';') !== false){
+                //                 $stats->pending++;
+                //                 $stats->save();
+                //                 $recp = explode(";", $buffer);
+                //                 //$recp = $this->fixName($recp);
+                //                 SendJob::dispatch($campaign, $stats->id, $recp, $attachements, $smtps[$step_smtp], 0);
+                //                 $step_rot++;
+                //                 if($step_rot == $rot)
+                //                 {
+                //                     $step_smtp++;
+                //                     $step_rot = 0;
+                //                 }
+                //                 if($step_smtp == $smtps_count)
+                //                     $step_smtp = 0;
+                //             }
+                //             else
+                //             {
+                //                 $stats->failed++;
+                //                 $stats->save();
+                //             }
+                //         }
+                //         else
+                //         {
+                //             $stats->failed++;
+                //             $stats->save();
+                //         }
+                //     }
+                // }
             }
         }
     }
