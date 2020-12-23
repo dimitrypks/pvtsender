@@ -64,10 +64,10 @@ class ProcessSend implements ShouldQueue
 				$emails = file(storage_path('app/public/' . $file->path));
 				foreach (array_chunk($emails, 10000) as $lines){
 					foreach($lines as $visitor) {
-						if(strpos($buffer, ';') !== false){
+						if(strpos($visitor, ';') !== false){
 							// $stats->pending++;
 							// $stats->save();
-							$recp = explode(";", $buffer);
+							$recp = explode(";", $visitor);
 							SendJob::dispatch($campaign, $stats->id, $recp, $attachements, $smtps[$step_smtp], 0);
 							$step_rot++;
 							if($step_rot == $rot)
