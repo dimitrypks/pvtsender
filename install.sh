@@ -28,7 +28,7 @@ docker-compose up -d &> /dev/null
 
 sleep 10
 
-docker-compose exec laravel-app php artisan migrate &> /dev/null
+docker-compose exec laravel-app php artisan migrate
 
 echo -e "\033[1;32mGenerating auth secret..\033[0m"
 
